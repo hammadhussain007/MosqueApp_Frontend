@@ -1,42 +1,50 @@
-# Exlogrn 🚀
+# Welcome to your Expo app 👋
 
-A starter app template for React Native & Expo, featuring a ready-to-use auth screens.
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-![AllScreens](assets/screenshot/snap.png)
+## Get started
 
-## About ✔️
+1. Install dependencies
 
-What can you do with this template 🤔
+   ```bash
+   npm install
+   ```
 
-- Log in with an email address and password.
-- Create an account with a name, email address and password.
-- Sign out.
+2. Start the app
 
-This template is a good way to start an application with a system of connection, disconnection, and creation of an account.  
-You will just need to adapt it according to your needs.
+   ```bash
+   npx expo start
+   ```
 
-![Made-In-Senegal](https://github.com/GalsenDev221/made.in.senegal/blob/master/assets/badge.svg)
+In the output, you'll find options to open the app in a
 
-## Usage ℹ️
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-Click on the **[Use this template](https://github.com/daoodaba975/exlogrn/generate)** button on this page to clone this respository to your GitHub account or you can clone this respository.
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-- Install dependencies
+## Get a fresh project
+
+When you're ready, run:
 
 ```bash
-yarn install
+npm run reset-project
 ```
 
-- Start the app
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-```bash
-npx expo start
-```
+## Learn more
 
-You can take a look on Expo's [docs](https://docs.expo.dev).
+To learn more about developing your project with Expo, look at the following resources:
 
-### Licence 🚨
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-This template is released under the **[MIT License](LICENSE.md)**.
+## Join the community
 
-Enjoy ✌🏽
+Join our community of developers creating universal apps.
+
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
