@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
+import { saveAuth } from "../services/auth";
 
 import Background from "../components/Background";
 import Logo from "../components/Logo";
@@ -12,6 +13,7 @@ import { theme } from "../core/theme";
 import { emailValidator } from "../helpers/emailValidator";
 import { passwordValidator } from "../helpers/passwordValidator";
 import { nameValidator } from "../helpers/nameValidator";
+import { authService } from "../services/api";
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState({ value: "", error: "" });
@@ -20,7 +22,7 @@ export default function RegisterScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState("");
 
-  const onSignUpPressed = () => {
+  const onSignUpPressed = async () => {
     const nameError = nameValidator(name.value);
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
@@ -30,33 +32,25 @@ export default function RegisterScreen({ navigation }) {
       setPassword({ ...password, error: passwordError });
       return;
     }
-    // call backend
-    setLoading(true);
-    setServerError("");
-    debugger
-    fetch("http://localhost:3000/sign-up", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: name.value, email: email.value, password: password.value }),
-    })
-      .then(async (res) => {
-        setLoading(false);
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || `HTTP ${res.status}`);
-        }
-        // success
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "MainTabs" }],
-        });
-      })
-      .catch((err) => {
-        setLoading(false);
-        setServerError(err.message || "Registration failed");
+    try {
+      setLoading(true);
+      setServerError("");
+      
+      const response = await authService.register(name.value, email.value, password.value);
+      
+      // Store the auth data using the auth service
+      await saveAuth(response.token, response.user);
+      
+      // Navigate to main app
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "MainTabs" }],
       });
+    } catch (error) {
+      setServerError(error.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

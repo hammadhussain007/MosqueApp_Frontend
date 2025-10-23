@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
+import { saveAuth } from "../services/auth";
 
 import Background from "../components/Background";
 import Logo from "../components/Logo";
@@ -11,6 +12,7 @@ import BackButton from "../components/BackButton";
 import { theme } from "../core/theme";
 import { emailValidator } from "../helpers/emailValidator";
 import { passwordValidator } from "../helpers/passwordValidator";
+import { authService } from "../services/api";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState({ value: "", error: "" });
@@ -18,7 +20,11 @@ export default function LoginScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState("");
 
-  const onLoginPressed = () => {
+  const onLoginPressed = async () => {
+    // Clear previous errors
+    setServerError("");
+
+    // Validate inputs
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
     if (emailError || passwordError) {
@@ -26,31 +32,39 @@ export default function LoginScreen({ navigation }) {
       setPassword({ ...password, error: passwordError });
       return;
     }
+
     setLoading(true);
-    setServerError("");
-    fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: email.value, password: password.value }),
-    })
-      .then(async (res) => {
-        setLoading(false);
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || `HTTP ${res.status}`);
-        }
-        // success
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "MainTabs" }],
-        });
-      })
-      .catch((err) => {
-        setLoading(false);
-        setServerError(err.message || "Login failed");
+    try {
+      // Attempt login
+      const response = await authService.login(email.value, password.value);
+      
+      console.log('Login response:', response); // Debug log
+      
+      if (!response || (!response.token && !response.accessToken)) {
+        throw new Error('No authentication token received');
+      }
+      
+      const token = response.token || response.accessToken;
+      const userData = response.user || response.userData || response;
+      
+      // Store the auth data using the auth service
+      await saveAuth(token, userData);
+      
+      // Navigate to main app
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "MainTabs" }],
       });
+    } catch (error) {
+      console.error('Login error:', error);
+      setServerError(
+        error.message === 'Invalid response from server' 
+          ? 'Server returned an invalid response' 
+          : error.message || 'Login failed'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
