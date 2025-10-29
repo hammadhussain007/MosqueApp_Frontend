@@ -10,7 +10,7 @@ export default function DashboardScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
 
-        <Text style={styles.pageTitle}>📊 Dashboard Analytics</Text>
+        <Text style={styles.pageTitle}> Dashboard Analytics</Text>
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Attendance Overview</Text>

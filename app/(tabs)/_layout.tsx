@@ -1,4 +1,3 @@
-// app/(tabs)/layout.tsx
 import { Tabs } from 'expo-router';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';

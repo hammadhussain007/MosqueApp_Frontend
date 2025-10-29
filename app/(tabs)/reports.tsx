@@ -7,7 +7,7 @@ import VolunteerStatsChart from '@/components/VolunteerStatsChart';
 export default function ReportsScreen() {
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>📊 Masjid Reports Dashboard</Text>
+      <Text style={styles.header}> Masjid Reports Dashboard</Text>
 
       <View style={styles.chartCard}>
         <Text style={styles.title}>Attendance Overview</Text>
