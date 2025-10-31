@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 24,
-    color: '#111827',
+    color: '#001F3F',
     fontWeight: '700',
     marginBottom: 4,
   },
