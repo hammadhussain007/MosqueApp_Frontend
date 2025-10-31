@@ -1,14 +1,17 @@
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
-import AttendanceChart from '@/components/AttendanceChart';
-import DonationExpenseChart from '@/components/DonationExpenseChart';
-import VolunteerStatsChart from '@/components/VolunteerStatsChart';
+import PredictiveAlertCard from '@/app/components/charts/PredictiveAlertCard';
+import AttendanceChart from '@/app/components/charts/AttendaceChart';
+import DonationExpenseChart from '@/app/components/charts/DonationVsExpense';
+import VolunteerStatsChart from '@/app/components/charts/volunteerStats';
 
 export default function ReportsScreen() {
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}> Masjid Reports Dashboard</Text>
-
+      <Text style={styles.header}> Admin Dashboard</Text>
+      
+      <PredictiveAlertCard />
+      
       <View style={styles.chartCard}>
         <Text style={styles.title}>Attendance Overview</Text>
         <AttendanceChart />

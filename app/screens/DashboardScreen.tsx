@@ -1,16 +1,17 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, View, Text, StyleSheet } from 'react-native';
-import AttendanceChart from '../components/charts/AttendanceChart';
-import DonationVsExpenseChart from '../components/charts/DonationVsExpenseChart';
-import VolunteerStatsChart from '../components/charts/VolunteerStatsChart';
 import PredictiveAlertCard from '../components/charts/PredictiveAlertCard'; 
+import AttendanceChart from '../components/charts/AttendaceChart';
+import DonationVsExpenseChart from '../components/charts/DonationVsExpense';
+import VolunteerStatsChart from '../components/charts/volunteerStats';
 
 export default function DashboardScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <PredictiveAlertCard />
 
-        <Text style={styles.pageTitle}> Dashboard Analytics</Text>
+        <Text style={styles.pageTitle}>Dashboard Analytics</Text>
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Attendance Overview</Text>
@@ -28,7 +29,7 @@ export default function DashboardScreen() {
         </View>
 
         
-        <PredictiveAlertCard />
+        
 
       </ScrollView>
     </SafeAreaView>
