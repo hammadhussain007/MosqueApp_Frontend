@@ -6,9 +6,9 @@ import { Ionicons } from '@expo/vector-icons';
 const screenWidth = Dimensions.get('window').width;
 
 export default function AttendanceChart() {
-  const [view, setView] = useState('weekly'); // default view
+  const [view, setView] = useState('weekly');
 
-  // 📅 Sample Data for Different Views
+  
   const chartData = {
     daily: {
       labels: ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'],
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#001F3F', // ✅ Navy Blue header
+    color: '#001F3F', 
   },
   switcher: {
     flexDirection: 'row',
@@ -117,12 +117,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   activeTab: {
-    backgroundColor: '#001F3F', // ✅ Navy blue active tab
+    backgroundColor: '#001F3F', 
   },
   tabText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#4B5563', // matching predictive alerts secondary text
+    color: '#4B5563', 
   },
   activeTabText: {
     color: '#FFFFFF',

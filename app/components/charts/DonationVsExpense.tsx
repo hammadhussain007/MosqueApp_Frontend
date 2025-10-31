@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   headerTitle: {
-    color: '#001F3F', // ✅ Navy Blue header
+    color: '#001F3F', 
     fontSize: 20,
     fontWeight: '700',
     marginLeft: 6,

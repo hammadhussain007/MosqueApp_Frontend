@@ -8,7 +8,7 @@ const screenWidth = Dimensions.get('window').width;
 export default function VolunteerStatsChart() {
   const [selected, setSelected] = useState(null);
 
-  // 🧭 Unified Volunteer Data
+  //  Volunteer Data
   const volunteerData = [
     { id: 1, name: 'Food Drive', volunteers: 45, color: '#2563EB' },     // Blue
     { id: 2, name: 'Cleaning', volunteers: 32, color: '#10B981' },      // Green
@@ -19,7 +19,7 @@ export default function VolunteerStatsChart() {
 
   const totalVolunteers = volunteerData.reduce((a, b) => a + b.volunteers, 0);
 
-  // 🥧 Format for PieChart
+  //  Format for PieChart
   const pieData = volunteerData.map((item, index) => ({
     name: item.name,
     population: item.volunteers,
