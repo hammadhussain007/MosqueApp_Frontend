@@ -41,7 +41,7 @@ export default function AttendanceChart() {
       {/* Header */}
       <View style={styles.header}>
         <Ionicons name="calendar-outline" size={20} color="#001F3F" />
-        <Text style={styles.title}> Mosque Attendance Overview</Text>
+        <Text style={styles.title}> Prayer Attendance Overview</Text>
       </View>
 
       {/* View Switcher */}
