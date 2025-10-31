@@ -64,10 +64,10 @@ export default function ReportsAnalytics() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF', // ✅ White background
+    backgroundColor: '#FFFFFF',
   },
   scrollContainer: {
-    padding: 20,
+    padding: 16,
   },
   header: {
     fontSize: 24,
@@ -82,36 +82,49 @@ const styles = StyleSheet.create({
   },
   section: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 16,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: '#E5E7EB',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 3,
   },
   sectionTitle: {
     fontSize: 16,
-    color: '#111827',
-    fontWeight: '600',
-    marginBottom: 12,
+    color: '#001F3F',
+    fontWeight: '700',
+    marginBottom: 16,
+    textAlign: 'left', // ✅ changed from 'center' to 'left'
   },
   card: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: '#F9FAFB', // ✅ Light gray card
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 10,
+    alignItems: 'center',
+    backgroundColor: '#F9FAFB',
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
+    marginBottom: 12,
     borderWidth: 1,
     borderColor: '#E5E7EB',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   cardIcon: {
     marginRight: 12,
-    marginTop: 3,
   },
   cardContent: {
     flex: 1,
   },
   cardTitle: {
-    color: '#111827',
+    color: '#001F3F',
     fontSize: 15,
     fontWeight: '600',
   },
