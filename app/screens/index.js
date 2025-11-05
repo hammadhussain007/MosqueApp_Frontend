@@ -4,7 +4,7 @@ export { default as RegisterScreen } from "./RegisterScreen";
 export { default as ResetPasswordScreen } from "./ResetPasswordScreen";
 export { default as HomeScreen } from "./HomeScreen";
 export { default as MainTabs } from "./MainTabs";
-export { default as PageTwo } from "./PageTwo";
 export { default as ForumScreen } from "./ForumScreen";
 export { default as AnnouncementsScreen } from "./AnnouncementsScreen";
 export { default as ProfileScreen } from "./ProfileScreen";
+export { default as NotificationsScreen } from "./NotificationsScreen";

@@ -1,11 +1,12 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "./HomeScreen";
+// Home tab removed as per request
 import ProfileScreen from "./ProfileScreen";
 import ForumScreen from "./ForumScreen";
 import ForumDetailScreen from "./ForumDetailScreen";
 import AnnouncementsScreen from "./AnnouncementsScreen";
+import NotificationsScreen from "./NotificationsScreen";
 
 const Tab = createBottomTabNavigator();
 const ForumStackNav = createStackNavigator();
@@ -22,11 +23,7 @@ function ForumStack() {
 export default function MainTabs() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen
-        name="HomeTab"
-        component={HomeScreen}
-        options={{ tabBarLabel: "Home" }}
-      />
+      {/* Home tab removed */}
       <Tab.Screen
         name="ProfileTab"
         component={ProfileScreen}
@@ -36,6 +33,11 @@ export default function MainTabs() {
         name="ForumTab"
         component={ForumStack}
         options={{ tabBarLabel: "Forum", headerShown: false }}
+      />
+      <Tab.Screen
+        name="NotificationsTab"
+        component={NotificationsScreen}
+        options={{ tabBarLabel: "Notifications" }}
       />
       <Tab.Screen
         name="AnnouncementsTab"

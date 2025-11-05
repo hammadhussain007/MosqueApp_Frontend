@@ -158,3 +158,15 @@ export const announcementService = {
         });
     },
 };
+
+// Notifications service functions
+export const notificationService = {
+    getNotifications: (params = {}) => {
+        const qs = new URLSearchParams(params).toString();
+        const endpoint = `/api/notifications${qs ? `?${qs}` : ''}`;
+        return apiRequest(endpoint, {
+            method: 'GET',
+            headers: getAuthHeader(store.getState().user.token),
+        });
+    },
+};
