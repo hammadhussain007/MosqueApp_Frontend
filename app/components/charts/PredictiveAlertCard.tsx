@@ -1,60 +1,93 @@
 // ReportsAnalytics.js
-import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet } from 'react-native';
+import React, { useRef, useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, View, Text, StyleSheet, TouchableWithoutFeedback, Animated, Dimensions, ActivityIndicator } from 'react-native';
 import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+const screenWidth = Dimensions.get('window').width;
+
 export default function ReportsAnalytics() {
+  const scaleAnimRefs = [useRef(new Animated.Value(1)).current, useRef(new Animated.Value(1)).current, useRef(new Animated.Value(1)).current];
+
+  const [cardsData, setCardsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Simulate fetching data from database
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCardsData([
+        {
+          id: 0,
+          icon: <Ionicons name="warning-outline" size={24} color="#F59E0B" />,
+          title: "Low Prayer Mat Inventory",
+          description: "Prayer mats will run out in 5 days at the current usage rate.",
+        },
+        {
+          id: 1,
+          icon: <MaterialIcons name="show-chart" size={24} color="#3B82F6" />,
+          title: "Peak Attendance Alert",
+          description: "Friday attendance expected to increase by 15% this week.",
+        },
+        {
+          id: 2,
+          icon: <FontAwesome5 name="users" size={22} color="#7C3AED" />,
+          title: "Volunteer Shortage",
+          description: "Need 8 more volunteers for the upcoming community event.",
+        },
+      ]);
+      setLoading(false);
+    }, 1200); // simulate 1.2 second delay
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handlePressIn = (index) => {
+    Animated.spring(scaleAnimRefs[index], {
+      toValue: 0.97,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = (index) => {
+    Animated.spring(scaleAnimRefs[index], {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Header */}
-        <Text style={styles.header}>Reports & Analytics</Text>
-        <Text style={styles.subHeader}>
-          Track attendance, finances, and volunteers
-        </Text>
+        <View style={[styles.headerContainer, { backgroundColor: '#129696' }]}>
+          <Text style={styles.header}>Reports & Analytics</Text>
+          <Text style={styles.subHeader}>
+            Track attendance, finances, and volunteers
+          </Text>
+        </View>
 
         {/* Alerts & Predictions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Alerts & Predictions</Text>
 
-          {/* Low Prayer Mat Inventory */}
-          <View style={styles.card}>
-            <View style={styles.cardIcon}>
-              <Ionicons name="warning-outline" size={24} color="#F59E0B" />
-            </View>
-            <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>Low Prayer Mat Inventory</Text>
-              <Text style={styles.cardDescription}>
-                Prayer mats will run out in 5 days at the current usage rate.
-              </Text>
-            </View>
-          </View>
-
-          {/* Peak Attendance Alert */}
-          <View style={styles.card}>
-            <View style={styles.cardIcon}>
-              <MaterialIcons name="show-chart" size={24} color="#3B82F6" />
-            </View>
-            <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>Peak Attendance Alert</Text>
-              <Text style={styles.cardDescription}>
-                Friday attendance expected to increase by 15% this week.
-              </Text>
-            </View>
-          </View>
-
-          {/* Volunteer Shortage */}
-          <View style={styles.card}>
-            <View style={styles.cardIcon}>
-              <FontAwesome5 name="users" size={22} color="#7C3AED" />
-            </View>
-            <View style={styles.cardContent}>
-              <Text style={styles.cardTitle}>Volunteer Shortage</Text>
-              <Text style={styles.cardDescription}>
-                Need 8 more volunteers for the upcoming community event.
-              </Text>
-            </View>
-          </View>
+          {loading ? (
+            <ActivityIndicator size="large" color="#129696" style={{ marginTop: 30 }} />
+          ) : (
+            cardsData.map((card, index) => (
+              <TouchableWithoutFeedback
+                key={card.id}
+                onPressIn={() => handlePressIn(index)}
+                onPressOut={() => handlePressOut(index)}
+              >
+                <Animated.View style={[styles.card, { transform: [{ scale: scaleAnimRefs[index] }], width: screenWidth - 40 }]}>
+                  <View style={styles.cardIcon}>{card.icon}</View>
+                  <View style={styles.cardContent}>
+                    <Text style={styles.cardTitle}>{card.title}</Text>
+                    <Text style={styles.cardDescription}>{card.description}</Text>
+                  </View>
+                </Animated.View>
+              </TouchableWithoutFeedback>
+            ))
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -69,15 +102,20 @@ const styles = StyleSheet.create({
   scrollContainer: {
     padding: 16,
   },
+  headerContainer: {
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 20,
+  },
   header: {
     fontSize: 24,
-    color: '#001F3F',
+    color: '#FFFFFF',
     fontWeight: '700',
     marginBottom: 4,
   },
   subHeader: {
     fontSize: 14,
-    color: '#6B7280',
+    color: '#E5E7EB',
     marginBottom: 20,
   },
   section: {
@@ -99,7 +137,7 @@ const styles = StyleSheet.create({
     color: '#001F3F',
     fontWeight: '700',
     marginBottom: 16,
-    textAlign: 'left', // ✅ changed from 'center' to 'left'
+    textAlign: 'left',
   },
   card: {
     flexDirection: 'row',

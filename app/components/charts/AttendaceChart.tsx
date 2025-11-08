@@ -8,17 +8,16 @@ const screenWidth = Dimensions.get('window').width;
 export default function AttendanceChart() {
   const [view, setView] = useState('weekly');
 
-  
   const chartData = {
     daily: {
       labels: ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'],
-      datasets: [{ data: [70, 85, 75, 90, 88], color: () => '#001F3F' }],
+      datasets: [{ data: [70, 85, 75, 90, 88], color: () => '#129696' }],
       legend: ['Today Attendance'],
     },
     weekly: {
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       datasets: [
-        { data: [350, 420, 390, 450, 500, 470, 440], color: () => '#001F3F' },
+        { data: [350, 420, 390, 450, 500, 470, 440], color: () => '#129696' },
         { data: [300, 370, 340, 410, 460, 430, 400], color: () => '#3B82F6' },
         { data: [340, 410, 370, 440, 490, 460, 430], color: () => '#7C3AED' },
       ],
@@ -27,7 +26,7 @@ export default function AttendanceChart() {
     monthly: {
       labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
       datasets: [
-        { data: [2200, 2400, 2300, 2500], color: () => '#001F3F' },
+        { data: [2200, 2400, 2300, 2500], color: () => '#129696' },
         { data: [1800, 2000, 1950, 2100], color: () => '#3B82F6' },
       ],
       legend: ['Men', 'Women'],
@@ -40,7 +39,7 @@ export default function AttendanceChart() {
     <View style={styles.card}>
       {/* Header */}
       <View style={styles.header}>
-        <Ionicons name="calendar-outline" size={20} color="#001F3F" />
+        <Ionicons name="calendar-outline" size={20} color="#129696" />
         <Text style={styles.title}> Prayer Attendance Overview</Text>
       </View>
 
@@ -70,7 +69,7 @@ export default function AttendanceChart() {
           backgroundGradientFrom: '#fff',
           backgroundGradientTo: '#fff',
           decimalPlaces: 0,
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          color: (opacity = 1) => `rgba(18, 150, 150, ${opacity})`, // changed to #129696
           labelColor: () => '#4B5563',
           barPercentage: 0.6,
         }}
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#001F3F', 
+    color: '#129696', // changed from navy blue
   },
   switcher: {
     flexDirection: 'row',
@@ -117,12 +116,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   activeTab: {
-    backgroundColor: '#001F3F', 
+    backgroundColor: '#129696', // changed from navy blue
   },
   tabText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#4B5563', 
+    color: '#4B5563',
   },
   activeTabText: {
     color: '#FFFFFF',

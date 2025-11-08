@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 
   // ✅ Navy Blue Header Styles
   headerContainer: {
-    backgroundColor: '#001F3F',
+    backgroundColor: '#129696',
     paddingVertical: 20,
     paddingHorizontal: 16,
     borderRadius: 16,

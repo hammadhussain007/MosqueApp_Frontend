@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, Dimensions, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity, FlatList, Animated } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -7,68 +7,97 @@ const screenWidth = Dimensions.get('window').width;
 
 export default function VolunteerStatsChart() {
   const [selected, setSelected] = useState(null);
+  const [insight, setInsight] = useState('Fetching data...');
+  const scaleAnim = useRef(new Animated.Value(1)).current;
 
-  //  Volunteer Data
   const volunteerData = [
-    { id: 1, name: 'Food Drive', volunteers: 45, color: '#2563EB' },     // Blue
-    { id: 2, name: 'Cleaning', volunteers: 32, color: '#10B981' },      // Green
-    { id: 3, name: 'Teaching', volunteers: 28, color: '#F59E0B' },      // Yellow
-    { id: 4, name: 'Events', volunteers: 56, color: '#8B5CF6' },        // Purple
-    { id: 5, name: 'Fundraising', volunteers: 38, color: '#EF4444' },   // Red
+    { id: 1, name: 'Food Drive', volunteers: 45, color: '#2563EB' },
+    { id: 2, name: 'Cleaning', volunteers: 32, color: '#10B981' },
+    { id: 3, name: 'Teaching', volunteers: 28, color: '#F59E0B' },
+    { id: 4, name: 'Events', volunteers: 56, color: '#8B5CF6' },
+    { id: 5, name: 'Fundraising', volunteers: 38, color: '#EF4444' },
   ];
 
   const totalVolunteers = volunteerData.reduce((a, b) => a + b.volunteers, 0);
 
-  //  Format for PieChart
+  // Simulate fetching insight from DB
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const maxVolunteers = Math.max(...volunteerData.map(d => d.volunteers));
+      const highestActivity = volunteerData.find(d => d.volunteers === maxVolunteers).name;
+      setInsight(`${highestActivity} has the highest volunteers!`);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleSelect = (index) => {
+    if (selected === index) {
+      setSelected(null);
+    } else {
+      setSelected(index);
+      Animated.sequence([
+        Animated.timing(scaleAnim, { toValue: 1.05, duration: 150, useNativeDriver: true }),
+        Animated.timing(scaleAnim, { toValue: 1, duration: 150, useNativeDriver: true }),
+      ]).start();
+    }
+  };
+
   const pieData = volunteerData.map((item, index) => ({
     name: item.name,
     population: item.volunteers,
-    color: selected === index ? '#001F3F' : item.color, // dark navy highlight
+    color: item.color,
     legendFontColor: '#4B5563',
-    legendFontSize: 13,
+    legendFontSize: 0,
   }));
 
   return (
     <View style={styles.card}>
       {/* Header */}
-      <View style={styles.header}>
-        <Ionicons name="people-outline" size={20} color="#001F3F" />
-        <Text style={styles.title}> Volunteer Statistics</Text>
+      <View style={[styles.header, { backgroundColor: '#129696' }]}>
+        <Ionicons name="people-outline" size={20} color="#FFFFFF" />
+        <Text style={[styles.title, { color: '#FFFFFF' }]}> Volunteer Statistics</Text>
       </View>
       <Text style={styles.subtitle}>Volunteer distribution by activity</Text>
 
-      {/* Pie Chart */}
-      <PieChart
-        data={pieData}
-        width={screenWidth - 40}
-        height={240}
-        chartConfig={{
-          backgroundGradientFrom: '#FFFFFF',
-          backgroundGradientTo: '#FFFFFF',
-          color: () => '#000',
-          decimalPlaces: 0,
-        }}
-        accessor="population"
-        backgroundColor="transparent"
-        paddingLeft="15"
-        absolute
-        onDataPointClick={({ index }) =>
-          setSelected(selected === index ? null : index)
-        }
-      />
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+        {/* Animated Pie Chart */}
+        <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+          <PieChart
+            data={pieData}
+            width={screenWidth - 200} // reduce width to bring insight closer
+            height={240}
+            chartConfig={{
+              backgroundGradientFrom: '#FFFFFF',
+              backgroundGradientTo: '#FFFFFF',
+              color: () => '#000',
+              decimalPlaces: 0,
+            }}
+            accessor="population"
+            backgroundColor="transparent"
+            paddingLeft="0"
+            absolute
+            hasLegend={false}
+            onDataPointClick={({ index }) => handleSelect(index)}
+          />
+        </Animated.View>
+
+        {/* Insight Box */}
+        <View style={[styles.insightBox, { alignSelf: 'center', marginLeft: 5 }]}>
+          <Text style={styles.insightText}>{insight}</Text>
+        </View>
+      </View>
 
       {/* Info Box */}
       {selected !== null && (
         <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>
-            {volunteerData[selected].name}
-          </Text>
+          <Text style={styles.infoTitle}>{volunteerData[selected].name}</Text>
           <Text style={styles.infoText}>
             {volunteerData[selected].volunteers} volunteers (
-            {Math.round(
-              (volunteerData[selected].volunteers / totalVolunteers) * 100
-            )}
-            % of total)
+            {((volunteerData[selected].volunteers / totalVolunteers) * 100).toFixed(1)}%)
+          </Text>
+          <Text style={styles.infoText}>
+            Contribution: {((volunteerData[selected].volunteers / totalVolunteers) * 100).toFixed(1)}%
           </Text>
         </View>
       )}
@@ -79,16 +108,11 @@ export default function VolunteerStatsChart() {
         data={volunteerData}
         keyExtractor={(item) => item.id.toString()}
         scrollEnabled={false}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <TouchableOpacity
-            style={[
-              styles.row,
-              selected === volunteerData.indexOf(item) && styles.activeRow,
-            ]}
+            style={[styles.row, selected === index && styles.activeRow]}
             activeOpacity={0.7}
-            onPress={() =>
-              setSelected(selected === volunteerData.indexOf(item) ? null : volunteerData.indexOf(item))
-            }
+            onPress={() => handleSelect(index)}
           >
             <View style={styles.left}>
               <View style={[styles.dot, { backgroundColor: item.color }]} />
@@ -122,17 +146,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
+    padding: 10,
+    borderRadius: 10,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#001F3F',
-  },
-  subtitle: {
-    fontSize: 13,
-    color: '#6B7280',
-    marginBottom: 10,
-  },
+  title: { fontSize: 18, fontWeight: '700', marginLeft: 6 },
+  subtitle: { fontSize: 13, color: '#6B7280', marginBottom: 10 },
   infoBox: {
     backgroundColor: '#F9FAFB',
     borderRadius: 10,
@@ -141,22 +159,9 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
   },
-  infoTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#001F3F',
-  },
-  infoText: {
-    fontSize: 13,
-    color: '#4B5563',
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#001F3F',
-    marginTop: 16,
-    marginBottom: 6,
-  },
+  infoTitle: { fontSize: 15, fontWeight: '700', color: '#001F3F' },
+  infoText: { fontSize: 13, color: '#4B5563' },
+  sectionTitle: { fontSize: 16, fontWeight: '700', color: '#001F3F', marginTop: 16, marginBottom: 6 },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -165,30 +170,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#E5E7EB',
   },
-  activeRow: {
-    backgroundColor: '#F3F4F6',
-    borderRadius: 6,
-  },
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 10,
-  },
-  label: {
-    fontSize: 14,
-    color: '#374151',
-    fontWeight: '500',
-  },
-  value: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#001F3F',
-  },
+  activeRow: { backgroundColor: '#F3F4F6', borderRadius: 6 },
+  left: { flexDirection: 'row', alignItems: 'center' },
+  dot: { width: 8, height: 8, borderRadius: 4, marginRight: 10 },
+  label: { fontSize: 14, color: '#374151', fontWeight: '500' },
+  value: { fontSize: 14, fontWeight: '600', color: '#001F3F' },
   totalRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -197,14 +183,14 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#E5E7EB',
   },
-  totalLabel: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#111827',
+  totalLabel: { fontSize: 15, fontWeight: '700', color: '#111827' },
+  totalValue: { fontSize: 15, fontWeight: '700', color: '#001F3F' },
+  insightBox: {
+    width: 120,
+    backgroundColor: '#F3F4F6',
+    borderRadius: 10,
+    padding: 10,
+    justifyContent: 'center',
   },
-  totalValue: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#001F3F',
-  },
+  insightText: { fontSize: 14, color: '#001F3F', fontWeight: '600' },
 });
