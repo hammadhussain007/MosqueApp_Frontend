@@ -8,3 +8,4 @@ export { default as ForumScreen } from "./ForumScreen";
 export { default as AnnouncementsScreen } from "./AnnouncementsScreen";
 export { default as ProfileScreen } from "./ProfileScreen";
 export { default as NotificationsScreen } from "./NotificationsScreen";
+export { default as ReportsScreen } from "./ReportsScreen";

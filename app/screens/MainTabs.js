@@ -1,14 +1,17 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { theme } from "../core/theme";
+import { selectUserRole } from "../store/slices/userSlice";
 import ProfileScreen from "./ProfileScreen";
 import ForumScreen from "./ForumScreen";
 import ForumDetailScreen from "./ForumDetailScreen";
 import AnnouncementsScreen from "./AnnouncementsScreen";
 import NotificationsScreen from "./NotificationsScreen";
+import ReportsScreen from "./ReportsScreen";
 
 const Tab = createBottomTabNavigator();
 const ForumStackNav = createStackNavigator();
@@ -40,6 +43,10 @@ function ForumStack() {
 }
 
 export default function MainTabs() {
+  // Get user role from Redux store
+  const userRole = useSelector(selectUserRole);
+  const isAdmin = userRole === 'admin';
+debugger
   return (
     <Tab.Navigator
       screenOptions={{
@@ -102,6 +109,18 @@ export default function MainTabs() {
           ),
         }}
       />
+      {isAdmin && (
+        <Tab.Screen
+          name="ReportsTab"
+          component={ReportsScreen}
+          options={{
+            tabBarLabel: "Dashboard",
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="chart-bar" size={size} color={color} />
+            ),
+          }}
+        />
+      )}
     </Tab.Navigator>
   );
 }

@@ -6,13 +6,14 @@ import * as ImagePicker from 'expo-image-picker';
 import { CommonActions } from '@react-navigation/native';
 
 import { profileService } from '../services/api';
-import { updateProfile, selectUser, logout } from '../store/slices/userSlice';
+import { updateProfile, selectUser, logout, setRole, selectUserRole } from '../store/slices/userSlice';
 import { clearAuth } from '../services/auth';
 import { theme } from '../core/theme';
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const userRole = useSelector(selectUserRole);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
