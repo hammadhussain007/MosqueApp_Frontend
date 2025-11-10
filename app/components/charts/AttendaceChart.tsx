@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 const screenWidth = Dimensions.get('window').width;
 
 export default function AttendanceChart() {
-  const [view, setView] = useState('weekly');
+  const [view, setView] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
 
   const chartData = {
     daily: {
@@ -45,7 +45,7 @@ export default function AttendanceChart() {
 
       {/* View Switcher */}
       <View style={styles.switcher}>
-        {['daily', 'weekly', 'monthly'].map((type) => (
+        {(['daily', 'weekly', 'monthly'] as const).map((type) => (
           <TouchableOpacity
             key={type}
             onPress={() => setView(type)}
@@ -63,6 +63,8 @@ export default function AttendanceChart() {
         data={currentData}
         width={screenWidth - 40}
         height={260}
+        yAxisLabel=""
+        yAxisSuffix=""
         fromZero
         showValuesOnTopOfBars={false}
         chartConfig={{

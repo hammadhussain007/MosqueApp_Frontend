@@ -18,12 +18,16 @@ export default function TabsLayout() {
         }}
       >
         <Tabs.Screen
-          name="community"
+          name="index"
           options={{
-            title: 'Community',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="people-outline" size={size} color={color} />
-            ),
+            href: null, // Hide from tabs
+          }}
+        />
+
+        <Tabs.Screen
+          name="explore"
+          options={{
+            href: null, // Hide from tabs
           }}
         />
 

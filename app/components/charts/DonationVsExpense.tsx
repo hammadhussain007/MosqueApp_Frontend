@@ -5,30 +5,36 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 const screenWidth = Dimensions.get('window').width - 32;
 
+const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const donationsDB = [12000, 13500, 14000, 15500, 15000, 18000, 17500, 16000, 19000, 20000, 21000, 23000];
+const expensesDB = [9000, 9500, 9800, 9700, 11000, 11800, 12000, 12500, 13000, 13500, 13800, 14500];
+
+interface MonthData {
+  month: string;
+  donation: number;
+  expense: number;
+}
+
 export default function FinancialOverview() {
-  const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const donationsDB = [12000, 13500, 14000, 15500, 15000, 18000, 17500, 16000, 19000, 20000, 21000, 23000];
-  const expensesDB = [9000, 9500, 9800, 9700, 11000, 11800, 12000, 12500, 13000, 13500, 13800, 14500];
 
   const [donations, setDonations] = useState(Array(labels.length).fill(0));
   const [expenses, setExpenses] = useState(Array(labels.length).fill(0));
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState<MonthData | null>(null);
 
   // Animate chart data to simulate live fetching
   useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
       if (i < labels.length) {
-        const newDonations = donations.map((val, idx) => (idx <= i ? donationsDB[idx] : 0));
-        const newExpenses = expenses.map((val, idx) => (idx <= i ? expensesDB[idx] : 0));
-        setDonations(newDonations);
-        setExpenses(newExpenses);
+        setDonations(donationsDB.map((val, idx) => (idx <= i ? val : 0)));
+        setExpenses(expensesDB.map((val, idx) => (idx <= i ? val : 0)));
         i++;
       } else {
         clearInterval(interval);
       }
     }, 150);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const data = {
@@ -85,7 +91,7 @@ export default function FinancialOverview() {
         }}
         bezier
         style={styles.chart}
-        onDataPointClick={({ index }) => {
+        onDataPointClick={({ index }: { index: number }) => {
           setSelectedMonth({
             month: labels[index],
             donation: donationsDB[index],

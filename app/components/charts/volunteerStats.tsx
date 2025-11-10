@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 const screenWidth = Dimensions.get('window').width;
 
 export default function VolunteerStatsChart() {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState<number | null>(null);
   const [insight, setInsight] = useState('Fetching data...');
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -24,14 +24,16 @@ export default function VolunteerStatsChart() {
   useEffect(() => {
     const timer = setTimeout(() => {
       const maxVolunteers = Math.max(...volunteerData.map(d => d.volunteers));
-      const highestActivity = volunteerData.find(d => d.volunteers === maxVolunteers).name;
-      setInsight(`${highestActivity} has the highest volunteers!`);
+      const highestActivity = volunteerData.find(d => d.volunteers === maxVolunteers);
+      if (highestActivity) {
+        setInsight(`${highestActivity.name} has the highest volunteers!`);
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  const handleSelect = (index) => {
+  const handleSelect = (index: number) => {
     if (selected === index) {
       setSelected(null);
     } else {
@@ -78,7 +80,6 @@ export default function VolunteerStatsChart() {
             paddingLeft="0"
             absolute
             hasLegend={false}
-            onDataPointClick={({ index }) => handleSelect(index)}
           />
         </Animated.View>
 

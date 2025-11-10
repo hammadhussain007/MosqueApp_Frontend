@@ -5,10 +5,17 @@ import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 const screenWidth = Dimensions.get('window').width;
 
+interface CardData {
+  id: number;
+  icon: React.JSX.Element;
+  title: string;
+  description: string;
+}
+
 export default function ReportsAnalytics() {
   const scaleAnimRefs = [useRef(new Animated.Value(1)).current, useRef(new Animated.Value(1)).current, useRef(new Animated.Value(1)).current];
 
-  const [cardsData, setCardsData] = useState([]);
+  const [cardsData, setCardsData] = useState<CardData[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Simulate fetching data from database
@@ -40,14 +47,14 @@ export default function ReportsAnalytics() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handlePressIn = (index) => {
+  const handlePressIn = (index: number) => {
     Animated.spring(scaleAnimRefs[index], {
       toValue: 0.97,
       useNativeDriver: true,
     }).start();
   };
 
-  const handlePressOut = (index) => {
+  const handlePressOut = (index: number) => {
     Animated.spring(scaleAnimRefs[index], {
       toValue: 1,
       useNativeDriver: true,
