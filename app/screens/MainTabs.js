@@ -1,7 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-// Home tab removed as per request
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
+import { theme } from "../core/theme";
 import ProfileScreen from "./ProfileScreen";
 import ForumScreen from "./ForumScreen";
 import ForumDetailScreen from "./ForumDetailScreen";
@@ -14,35 +16,91 @@ const ForumStackNav = createStackNavigator();
 function ForumStack() {
   return (
     <ForumStackNav.Navigator>
-      <ForumStackNav.Screen name="ForumList" component={ForumScreen} options={{ headerShown: false }} />
-      <ForumStackNav.Screen name="ForumDetail" component={ForumDetailScreen} options={{ title: 'Forum' }} />
+      <ForumStackNav.Screen
+        name="ForumList"
+        component={ForumScreen}
+        options={{ headerShown: false }}
+      />
+      <ForumStackNav.Screen
+        name="ForumDetail"
+        component={ForumDetailScreen}
+        options={{
+          title: 'Discussion',
+          headerStyle: {
+            backgroundColor: theme.colors.primary,
+          },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: {
+            fontWeight: '600',
+          },
+        }}
+      />
     </ForumStackNav.Navigator>
   );
 }
 
 export default function MainTabs() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
-      {/* Home tab removed */}
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textSecondary,
+        tabBarStyle: {
+          backgroundColor: theme.colors.surface,
+          borderTopWidth: 1,
+          borderTopColor: theme.colors.border,
+          paddingBottom: 5,
+          paddingTop: 5,
+          height: 60,
+          ...theme.shadows.medium,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+          marginTop: -5,
+        },
+      }}
+    >
       <Tab.Screen
         name="ProfileTab"
         component={ProfileScreen}
-        options={{ tabBarLabel: "Profile" }}
+        options={{
+          tabBarLabel: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="account-circle-outline" size={size} color={color} />
+          ),
+        }}
       />
       <Tab.Screen
         name="ForumTab"
         component={ForumStack}
-        options={{ tabBarLabel: "Forum", headerShown: false }}
+        options={{
+          tabBarLabel: "Forum",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="forum-outline" size={size} color={color} />
+          ),
+        }}
       />
       <Tab.Screen
         name="NotificationsTab"
         component={NotificationsScreen}
-        options={{ tabBarLabel: "Notifications" }}
+        options={{
+          tabBarLabel: "Activity",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="bell-outline" size={size} color={color} />
+          ),
+        }}
       />
       <Tab.Screen
         name="AnnouncementsTab"
         component={AnnouncementsScreen}
-        options={{ tabBarLabel: "Announcements" }}
+        options={{
+          tabBarLabel: "Announcements",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="bullhorn-outline" size={size} color={color} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );

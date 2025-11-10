@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Exlogrn",
-    "slug": "Exlogrn",
+    "name": "Mosque App",
+    "slug": "mosque-app",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/app.png",
@@ -9,16 +9,18 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#00897B"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mosque.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/app.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#00897B"
+      },
+      "package": "com.mosque.app"
     },
     "web": {
       "favicon": "./assets/app.png"

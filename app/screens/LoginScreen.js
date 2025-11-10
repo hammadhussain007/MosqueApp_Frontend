@@ -1,14 +1,9 @@
 import React, { useState } from "react";
-import { TouchableOpacity, StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import { TouchableOpacity, StyleSheet, View, ScrollView, KeyboardAvoidingView, Platform, StatusBar } from "react-native";
+import { Text, TextInput, Button, Card } from "react-native-paper";
 import { saveAuth } from "../services/auth";
 
-import Background from "../components/Background";
-import Logo from "../components/Logo";
-import Header from "../components/Header";
-import Button from "../components/Button";
-import TextInput from "../components/TextInput";
-import BackButton from "../components/BackButton";
+import MosqueLogo from "../components/MosqueLogo";
 import { theme } from "../core/theme";
 import { emailValidator } from "../helpers/emailValidator";
 import { passwordValidator } from "../helpers/passwordValidator";
@@ -68,74 +63,189 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <Background>
-      <BackButton goBack={navigation.goBack} />
-      <Logo />
-      <Header>Hello.</Header>
-      <TextInput
-        label="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: "" })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-      <TextInput
-        label="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: "" })}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("ResetPasswordScreen")}
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardView}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.forgot}>Forgot your password ?</Text>
-        </TouchableOpacity>
-      </View>
-      {serverError ? (
-        <Text style={{ color: theme.colors.error, textAlign: "center" }}>
-          {serverError}
-        </Text>
-      ) : null}
-      <Button mode="contained" onPress={onLoginPressed} loading={loading} disabled={loading}>
-        Log in
-      </Button>
-      <View style={styles.row}>
-        <Text>You do not have an account yet ?</Text>
-      </View>
-      <View style={styles.row}>
-        <TouchableOpacity onPress={() => navigation.replace("RegisterScreen")}>
-          <Text style={styles.link}>Create !</Text>
-        </TouchableOpacity>
-      </View>
-    </Background>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <Text style={styles.backText}>← Back</Text>
+          </TouchableOpacity>
+
+          <View style={styles.header}>
+            <MosqueLogo size={80} color={theme.colors.primary} />
+            <Text style={styles.title}>Welcome Back</Text>
+            <Text style={styles.subtitle}>Sign in to continue to Mosque App</Text>
+          </View>
+
+          <Card style={styles.card}>
+            <Card.Content>
+              <TextInput
+                label="Email"
+                mode="outlined"
+                value={email.value}
+                onChangeText={(text) => setEmail({ value: text, error: "" })}
+                error={!!email.error}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                style={styles.input}
+                outlineColor={theme.colors.border}
+                activeOutlineColor={theme.colors.primary}
+                left={<TextInput.Icon icon="email-outline" />}
+              />
+              {email.error ? (
+                <Text style={styles.errorText}>{email.error}</Text>
+              ) : null}
+
+              <TextInput
+                label="Password"
+                mode="outlined"
+                value={password.value}
+                onChangeText={(text) => setPassword({ value: text, error: "" })}
+                error={!!password.error}
+                secureTextEntry
+                style={styles.input}
+                outlineColor={theme.colors.border}
+                activeOutlineColor={theme.colors.primary}
+                left={<TextInput.Icon icon="lock-outline" />}
+              />
+              {password.error ? (
+                <Text style={styles.errorText}>{password.error}</Text>
+              ) : null}
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ResetPasswordScreen")}
+                style={styles.forgotPassword}
+              >
+                <Text style={styles.forgotText}>Forgot Password?</Text>
+              </TouchableOpacity>
+
+              {serverError ? (
+                <Text style={styles.serverError}>{serverError}</Text>
+              ) : null}
+
+              <Button
+                mode="contained"
+                onPress={onLoginPressed}
+                loading={loading}
+                disabled={loading}
+                style={styles.loginButton}
+                contentStyle={styles.buttonContent}
+                labelStyle={styles.buttonLabel}
+              >
+                Sign In
+              </Button>
+            </Card.Content>
+          </Card>
+
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.replace("RegisterScreen")}>
+              <Text style={styles.signupLink}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  forgotPassword: {
-    width: "100%",
-    alignItems: "flex-end",
-    marginBottom: 10,
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
   },
-  row: {
-    flexDirection: "row",
-    marginTop: 4,
+  keyboardView: {
+    flex: 1,
   },
-  forgot: {
-    fontSize: 13,
-    color: theme.colors.secondary,
+  scrollView: {
+    flexGrow: 1,
+    padding: theme.spacing.lg,
   },
-  link: {
-    fontWeight: "bold",
+  backButton: {
+    marginBottom: theme.spacing.md,
+  },
+  backText: {
     color: theme.colors.primary,
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: theme.spacing.xl,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: theme.colors.text,
+    marginTop: theme.spacing.md,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: theme.colors.textSecondary,
+    marginTop: theme.spacing.xs,
+  },
+  card: {
+    borderRadius: theme.roundness.large,
+    ...theme.shadows.medium,
+  },
+  input: {
+    marginBottom: theme.spacing.xs,
+    backgroundColor: theme.colors.surface,
+  },
+  errorText: {
+    color: theme.colors.error,
+    fontSize: 12,
+    marginBottom: theme.spacing.sm,
+    marginLeft: theme.spacing.xs,
+  },
+  forgotPassword: {
+    alignSelf: 'flex-end',
+    marginVertical: theme.spacing.sm,
+  },
+  forgotText: {
+    color: theme.colors.primary,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  serverError: {
+    color: theme.colors.error,
+    textAlign: 'center',
+    marginBottom: theme.spacing.md,
+    fontSize: 14,
+  },
+  loginButton: {
+    marginTop: theme.spacing.md,
+    borderRadius: theme.roundness.medium,
+  },
+  buttonContent: {
+    paddingVertical: theme.spacing.sm,
+  },
+  buttonLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: theme.spacing.xl,
+  },
+  footerText: {
+    color: theme.colors.textSecondary,
+    fontSize: 14,
+  },
+  signupLink: {
+    color: theme.colors.primary,
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
