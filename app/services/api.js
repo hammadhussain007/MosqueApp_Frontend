@@ -1,5 +1,5 @@
 // API configuration and base URL
-export const API_URL = __DEV__ 
+export const API_URL = __DEV__
     ? 'http://localhost:3000'  // Android emulator localhost (10.0.2.2 maps to host's localhost)
     : 'https://your-production-api.com';
 
@@ -93,7 +93,6 @@ export const profileService = {
             method: 'POST',
             headers: {
                 ...getAuthHeader(store.getState().user.token),
-                'Content-Type': 'multipart/form-data',
             },
             body: formData,
         });

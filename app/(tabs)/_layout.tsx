@@ -40,6 +40,13 @@ export default function TabsLayout() {
             ),
           }}
         />
+
+        <Tabs.Screen
+          name="quran-hadith"
+          options={{
+            title: 'Quran & Hadith',
+          }}
+        />
       </Tabs>
 
       <StatusBar style="auto" />

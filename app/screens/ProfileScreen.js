@@ -16,7 +16,7 @@ export default function ProfileScreen({ navigation }) {
   const userRole = useSelector(selectUserRole);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const [formData, setFormData] = useState({
     fullName: user?.fullName || '',
     email: user?.email || '',

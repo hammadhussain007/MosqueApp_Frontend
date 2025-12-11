@@ -46,7 +46,6 @@ export default function MainTabs() {
   // Get user role from Redux store
   const userRole = useSelector(selectUserRole);
   const isAdmin = userRole === 'admin';
-debugger
   return (
     <Tab.Navigator
       screenOptions={{
@@ -69,16 +68,19 @@ debugger
         },
       }}
     >
-      <Tab.Screen
-        name="ProfileTab"
-        component={ProfileScreen}
-        options={{
-          tabBarLabel: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="account-circle-outline" size={size} color={color} />
-          ),
-        }}
-      />
+      {isAdmin && (
+        <Tab.Screen
+          name="ReportsTab"
+          component={ReportsScreen}
+          options={{
+            tabBarLabel: "Dashboard",
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="chart-bar" size={size} color={color} />
+            ),
+          }}
+        />
+      )}
+
       <Tab.Screen
         name="ForumTab"
         component={ForumStack}
@@ -109,18 +111,17 @@ debugger
           ),
         }}
       />
-      {isAdmin && (
-        <Tab.Screen
-          name="ReportsTab"
-          component={ReportsScreen}
-          options={{
-            tabBarLabel: "Dashboard",
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="chart-bar" size={size} color={color} />
-            ),
-          }}
-        />
-      )}
+      <Tab.Screen
+        name="ProfileTab"
+        component={ProfileScreen}
+        options={{
+          tabBarLabel: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="account-circle-outline" size={size} color={color} />
+          ),
+        }}
+      />
+
     </Tab.Navigator>
   );
 }
