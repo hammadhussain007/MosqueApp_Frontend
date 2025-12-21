@@ -12,6 +12,7 @@ import ForumDetailScreen from "./ForumDetailScreen";
 import AnnouncementsScreen from "./AnnouncementsScreen";
 import NotificationsScreen from "./NotificationsScreen";
 import ReportsScreen from "./ReportsScreen";
+import QuranHadithScreen from "./QuranHadithScreen";
 
 const Tab = createBottomTabNavigator();
 const ForumStackNav = createStackNavigator();
@@ -108,6 +109,16 @@ export default function MainTabs() {
           tabBarLabel: "Announcements",
           tabBarIcon: ({ color, size }) => (
             <Icon name="bullhorn-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="QuranHadithTab"
+        component={QuranHadithScreen}
+        options={{
+          tabBarLabel: "Quran & Hadith",
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="book-open-outline" size={size} color={color} />
           ),
         }}
       />

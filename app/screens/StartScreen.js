@@ -17,7 +17,7 @@ export default function StartScreen({ navigation }) {
         <View style={styles.content}>
           <View style={styles.logoContainer}>
             <MosqueLogo size={120} color="#FFFFFF" />
-            <Text style={styles.appName}>Mosque App</Text>
+            <Text style={styles.appName}>MasjidConnect</Text>
             <Text style={styles.tagline}>
               Connect, Learn, and Grow Together
             </Text>
