@@ -42,8 +42,9 @@ export default function SignupScreen({ navigation }) {
       return;
     }
 
-    Alert.alert("Signup Successful", `Welcome, ${fullName}! Role: ${role}`);
-    navigation.replace("Home");
+    // ✅ Navigate to OTP screen after signup
+    Alert.alert("Verify Email", "A verification code has been sent to your email.");
+    navigation.navigate("OtpVerification", { email });
   };
 
   return (
@@ -73,7 +74,6 @@ export default function SignupScreen({ navigation }) {
         secureTextEntry
       />
 
-      {/*Dropdown for Role Selection */}
       <Dropdown
         style={styles.dropdown}
         data={roleOptions}
@@ -84,7 +84,6 @@ export default function SignupScreen({ navigation }) {
         onChange={(item) => setRole(item.value)}
       />
 
-      {/* Imam-specific fields */}
       {role === "imam" && (
         <View style={styles.extraFields}>
           <Text style={styles.subTitle}>Imam Details</Text>
@@ -113,7 +112,7 @@ export default function SignupScreen({ navigation }) {
 
           <TextInput
             style={[styles.input, { height: 100 }]}
-            placeholder="Educational Background / Certification (e.g., Dars-e-Nizami, Islamic Studies)"
+            placeholder="Educational Background / Certification"
             value={bio}
             onChangeText={setBio}
             multiline
@@ -124,7 +123,7 @@ export default function SignupScreen({ navigation }) {
       <Button title="Sign Up" onPress={handleSignup} />
       <Text
         style={styles.linkText}
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate("LoginScreen")}
       >
         Already have an account? Login
       </Text>
@@ -183,3 +182,4 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
 });
+
