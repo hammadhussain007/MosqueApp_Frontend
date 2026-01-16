@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, FlatList, StyleSheet, RefreshControl, StatusBar } from "react-native";
 import { FAB, Portal, Dialog, Button, TextInput, Text, Searchbar, Chip, Avatar } from "react-native-paper";
+import { useSelector } from 'react-redux';
 
 import Post from "../components/Post";
 import { theme } from "../core/theme";
@@ -13,6 +14,8 @@ export default function ForumScreen({ navigation }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  
+  const currentUser = useSelector((state) => state.user.profile);
 
   useEffect(() => {
     loadPosts();
@@ -65,6 +68,20 @@ export default function ForumScreen({ navigation }) {
       });
     } catch (error) {
       console.error('Error toggling like:', error);
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      console.log('Deleting post:', postId);
+      const response = await forumService.deletePost(postId);
+      if (response.success) {
+        setForums(prevForums => prevForums.filter(forum => forum.id !== postId));
+        console.log('Post deleted successfully');
+      }
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      alert(error.message || 'Failed to delete post');
     }
   };
 
@@ -133,6 +150,8 @@ export default function ForumScreen({ navigation }) {
             post={item} 
             onLike={() => handleLikePost(item.id)}
             onPress={() => navigation.navigate('ForumDetail', { postId: item.id })}
+            onDelete={() => handleDeletePost(item.id)}
+            currentUser={currentUser}
           />
         )}
         contentContainerStyle={styles.listContent}

@@ -12,9 +12,11 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserProfile: (state, action) => {
+      console.log('setUserProfile called with:', action.payload);
       state.profile = action.payload;
       // Extract role from profile if it exists
       state.role = action.payload?.role || 'user';
+      console.log('Role set to:', state.role);
     },
     setToken: (state, action) => {
       state.token = action.payload;

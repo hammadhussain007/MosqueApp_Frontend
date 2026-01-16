@@ -42,6 +42,9 @@ export default function LoginScreen({ navigation }) {
       const token = response.token || response.accessToken;
       const userData = response.user || response.userData || response;
       
+      console.log('User data being saved:', userData); // Debug log
+      console.log('User role:', userData?.role); // Debug log
+      
       // Store the auth data using the auth service
       await saveAuth(token, userData);
       

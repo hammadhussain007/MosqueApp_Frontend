@@ -9,6 +9,7 @@ import { enableScreens } from "react-native-screens";
 
 import { store, persistor } from './app/store';
 import { theme } from "./app/core/theme";
+import ErrorBoundary from './app/components/ErrorBoundary';
 import {
   StartScreen,
   LoginScreen,
@@ -53,32 +54,34 @@ export default function App() {
   return (
     <ReduxProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <PaperProvider theme={theme}>
-            <NavigationContainer>
-              <Stack.Navigator
-                initialRouteName={isAuthenticated ? "MainTabs" : "StartScreen"}
-                screenOptions={{
-                  headerShown: false,
-                }}
-              >
-                <Stack.Screen name="StartScreen" component={StartScreen} />
-                <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-                <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
-                <Stack.Screen name="MainTabs" component={MainTabs} />
-                <Stack.Screen 
-                  name="ProfileScreen" 
-                  component={ProfileScreen}
-                  options={{
-                    headerShown: true,
-                    title: 'Profile',
+        <ErrorBoundary>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <PaperProvider theme={theme}>
+              <NavigationContainer>
+                <Stack.Navigator
+                  initialRouteName={isAuthenticated ? "MainTabs" : "StartScreen"}
+                  screenOptions={{
+                    headerShown: false,
                   }}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </PaperProvider>
-        </GestureHandlerRootView>
+                >
+                  <Stack.Screen name="StartScreen" component={StartScreen} />
+                  <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                  <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+                  <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+                  <Stack.Screen name="MainTabs" component={MainTabs} />
+                  <Stack.Screen 
+                    name="ProfileScreen" 
+                    component={ProfileScreen}
+                    options={{
+                      headerShown: true,
+                      title: 'Profile',
+                    }}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </PaperProvider>
+          </GestureHandlerRootView>
+        </ErrorBoundary>
       </PersistGate>
     </ReduxProvider>
   );

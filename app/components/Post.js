@@ -1,12 +1,16 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Card, Text, Avatar, Chip } from "react-native-paper";
+import { Card, Text, Avatar, Chip, IconButton } from "react-native-paper";
 import { theme } from "../core/theme";
 import { useSelector } from "react-redux";
 
-export default function Post({ post, onLike, onPress }) {
-  const currentUser = useSelector(state => state.user.profile);
-  const isLiked = post.likes?.some(like => like.userId === currentUser?.id) || post.isLiked;
+export default function Post({ post, onLike, onPress, onDelete, currentUser }) {
+  const user = useSelector(state => state.user.profile);
+  const profile = currentUser || user;
+  const isLiked = post.likes?.some(like => like.userId === profile?.id) || post.isLiked;
+  
+  // Check if user can delete (admin or post author)
+  const canDelete = profile?.role === 'admin' || post.author?.id === profile?.id;
 
   const getInitials = (name) => {
     if (!name) return '?';
@@ -46,6 +50,17 @@ export default function Post({ post, onLike, onPress }) {
               </Text>
               <Text style={styles.date}>{formatDate(post.createdAt)}</Text>
             </View>
+            {canDelete && (
+              <IconButton
+                icon="delete-outline"
+                size={20}
+                iconColor={theme.colors.error}
+                onPress={(e) => {
+                  e?.stopPropagation?.();
+                  onDelete?.();
+                }}
+              />
+            )}
           </View>
 
           <Text style={styles.title} numberOfLines={2}>

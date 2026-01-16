@@ -12,9 +12,13 @@ import ForumDetailScreen from "./ForumDetailScreen";
 import AnnouncementsScreen from "./AnnouncementsScreen";
 import NotificationsScreen from "./NotificationsScreen";
 import ReportsScreen from "./ReportsScreen";
+import ImamDashboard from "./ImamDashboard";
+import TopicDetailScreen from "./TopicDetailScreen";
+import KhutbahSearchScreen from "./KhutbahSearchScreen";
 
 const Tab = createBottomTabNavigator();
 const ForumStackNav = createStackNavigator();
+const ImamStackNav = createStackNavigator();
 
 function ForumStack() {
   return (
@@ -42,11 +46,56 @@ function ForumStack() {
   );
 }
 
+function ImamStack() {
+  return (
+    <ImamStackNav.Navigator>
+      <ImamStackNav.Screen
+        name="ImamDashboardList"
+        component={ImamDashboard}
+        options={{ 
+          headerShown: false
+        }}
+      />
+      <ImamStackNav.Screen
+        name="KhutbahSearch"
+        component={KhutbahSearchScreen}
+        options={{
+          title: 'Search Islamic Content',
+          headerStyle: {
+            backgroundColor: theme.colors.primary,
+          },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: {
+            fontWeight: '600',
+          },
+        }}
+      />
+      <ImamStackNav.Screen
+        name="TopicDetail"
+        component={TopicDetailScreen}
+        options={{
+          title: 'Topic Details',
+          headerStyle: {
+            backgroundColor: theme.colors.primary,
+          },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: {
+            fontWeight: '600',
+          },
+        }}
+      />
+    </ImamStackNav.Navigator>
+  );
+}
+
 export default function MainTabs() {
   // Get user role from Redux store
   const userRole = useSelector(selectUserRole);
   const isAdmin = userRole === 'admin';
-debugger
+  const isImam = userRole === 'imam';
+  
+  console.log('MainTabs - userRole:', userRole, 'isImam:', isImam, 'isAdmin:', isAdmin);
+  
   return (
     <Tab.Navigator
       screenOptions={{
@@ -117,6 +166,18 @@ debugger
             tabBarLabel: "Dashboard",
             tabBarIcon: ({ color, size }) => (
               <Icon name="chart-bar" size={size} color={color} />
+            ),
+          }}
+        />
+      )}
+      {isImam && (
+        <Tab.Screen
+          name="ImamTab"
+          component={ImamStack}
+          options={{
+            tabBarLabel: "Khutbah",
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="book-open-variant" size={size} color={color} />
             ),
           }}
         />

@@ -139,6 +139,13 @@ export const forumService = {
             body: JSON.stringify({ postId }),
         });
     },
+
+    deletePost: (postId) => {
+        return apiRequest(`/api/forum/posts/${postId}`, {
+            method: 'DELETE',
+            headers: getAuthHeader(store.getState().user.token),
+        });
+    },
 };
 
 // Announcement service functions

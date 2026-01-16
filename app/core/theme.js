@@ -71,10 +71,13 @@ export const theme = {
   },
   
   // Border radius
-  roundness: {
+  borderRadius: {
     small: 8,
     medium: 12,
     large: 16,
     full: 9999,
   },
+  
+  // Keep roundness for compatibility with MD3
+  roundness: 12,
 };
