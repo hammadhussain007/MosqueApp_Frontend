@@ -1,66 +1,70 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
+import { saveVerse } from "../../store/slices/activitySlice";
 
-export default function VerseCard() {
+export default function VerseCard({ type, arabic, translation, reference }) {
+  const dispatch = useDispatch();
+
+  const handleSave = () => {
+    dispatch(
+      saveVerse({
+        type,
+        arabic,
+        translation,
+        reference,
+      })
+    );
+  };
+
   return (
     <View style={styles.card}>
-      <Text style={styles.arabic}>
-        وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ
-      </Text>
+      <Text style={styles.type}>{type}</Text>
 
-      <Text style={styles.translation}>
-        “And whoever relies upon Allah – then He is sufficient for him.”
-      </Text>
+      {arabic ? <Text style={styles.arabic}>{arabic}</Text> : null}
 
-      <Text style={styles.reference}>
-        — Surah At-Talaq (65:3)
-      </Text>
+      <Text style={styles.translation}>{translation}</Text>
+      <Text style={styles.reference}>{reference}</Text>
 
-      <View style={styles.reflectionBox}>
-        <Text style={styles.reflectionTitle}>Reflection</Text>
-        <Text style={styles.reflectionText}>
-          This verse reminds us that complete trust in Allah brings peace,
-          protection, and guidance during difficulties.
-        </Text>
-      </View>
+      <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
+        <Text style={styles.saveText}>Save</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#EAF6F5",
+    backgroundColor: "#F6F6F6",
     borderRadius: 16,
-    padding: 20,
-    marginBottom: 20,
+    padding: 16,
+    marginBottom: 16,
+  },
+  type: {
+    fontSize: 12,
+    color: "#777",
+    marginBottom: 6,
   },
   arabic: {
     fontSize: 20,
     textAlign: "right",
-    color: "#1B5E5E",
     marginBottom: 10,
   },
   translation: {
-    fontSize: 15,
+    fontSize: 14,
     color: "#333",
-    marginBottom: 6,
+    marginBottom: 8,
   },
   reference: {
-    fontSize: 13,
-    color: "#129696",
-    marginBottom: 12,
+    fontSize: 12,
+    color: "#666",
   },
-  reflectionBox: {
-    backgroundColor: "#F3FBFA",
-    padding: 12,
-    borderRadius: 12,
+  saveBtn: {
+    marginTop: 12,
+    alignSelf: "flex-end",
   },
-  reflectionTitle: {
+  saveText: {
+    color: "#4CAF50",
     fontWeight: "600",
-    marginBottom: 4,
-  },
-  reflectionText: {
-    fontSize: 14,
-    color: "#555",
   },
 });

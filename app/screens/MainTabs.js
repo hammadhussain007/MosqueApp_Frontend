@@ -13,6 +13,8 @@ import AnnouncementsScreen from "./AnnouncementsScreen";
 import NotificationsScreen from "./NotificationsScreen";
 import ReportsScreen from "./ReportsScreen";
 import QuranHadithScreen from "./QuranHadithScreen";
+import TopicDetailScreen from "./TopicDetailScreen";
+
 
 const Tab = createBottomTabNavigator();
 const ForumStackNav = createStackNavigator();
@@ -131,6 +133,11 @@ export default function MainTabs() {
             <Icon name="account-circle-outline" size={size} color={color} />
           ),
         }}
+      />
+      <Tab.Screen
+        name="TopicDetail"
+        component={TopicDetailScreen}
+        options={{ tabBarButton: () => null }}
       />
 
     </Tab.Navigator>
