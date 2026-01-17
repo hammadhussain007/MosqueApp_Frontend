@@ -21,7 +21,7 @@ import {
 
 import LoadingScreen from './app/screens/LoadingScreen';
 import { loadStoredAuth } from './app/services/auth';
-import OtpVerificationScreen from './app/screens/OtpVerificationScreen'; // ✅ import OTP screen
+import OtpVerificationScreen from './screens/OtpVerficationScreen'; // ✅ import OTP screen
 
 const Stack = createStackNavigator();
 
@@ -89,4 +89,3 @@ export default function App() {
     </ReduxProvider>
   );
 }
-
