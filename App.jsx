@@ -1,43 +1,48 @@
 import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
-import { Provider as ReduxProvider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
+import { Provider as ReduxProvider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
 
-import { store, persistor } from './app/store';
+import { store, persistor } from "./app/store";
 import { theme } from "./app/core/theme";
-import ErrorBoundary from './app/components/ErrorBoundary';
+import ErrorBoundary from "./app/components/ErrorBoundary";
+
+import LoadingScreen from "./app/screens/LoadingScreen";
+import { loadStoredAuth } from "./app/services/auth";
+
+/* 🔹 EXISTING SCREENS */
 import {
   StartScreen,
   LoginScreen,
   RegisterScreen,
   ResetPasswordScreen,
-  HomeScreen,
   MainTabs,
   ProfileScreen,
 } from "./app/screens";
 
+/* 🔹 IMAM BOOKING MODULE SCREENS */
+import ServiceSelectionScreen from "./app/screens/ServiceSelectionScreen";
+import ServiceRequestFormScreen from "./app/screens/ServiceRequestFormScreen";
+import NearbyImamsScreen from "./app/screens/NearbyImamsScreen";
+import ImamDetailScreen from "./app/screens/ImamDetailScreen";
+import BookingConfirmationScreen from "./app/screens/BookingConfirmationScreen";
+import BookingStatusScreen from "./app/screens/BookingStatusScreen";
+
 const Stack = createStackNavigator();
-
 enableScreens();
-
-import LoadingScreen from './app/screens/LoadingScreen';
-import { loadStoredAuth } from './app/services/auth';
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
   React.useEffect(() => {
     const initializeAuth = async () => {
-      const authLoaded = await loadStoredAuth();
-      setIsAuthenticated(authLoaded);
+      await loadStoredAuth();
       setIsLoading(false);
     };
-
     initializeAuth();
   }, []);
 
@@ -59,23 +64,51 @@ export default function App() {
             <PaperProvider theme={theme}>
               <NavigationContainer>
                 <Stack.Navigator
-                  initialRouteName={isAuthenticated ? "MainTabs" : "StartScreen"}
-                  screenOptions={{
-                    headerShown: false,
-                  }}
+                  initialRouteName="ServiceSelection"
+                  screenOptions={{ headerShown: false }}
                 >
+                  {/* 🔹 IMAM BOOKING FLOW */}
+                  <Stack.Screen
+                    name="ServiceSelection"
+                    component={ServiceSelectionScreen}
+                  />
+                  <Stack.Screen
+                    name="ServiceRequestForm"
+                    component={ServiceRequestFormScreen}
+                  />
+                  <Stack.Screen
+                    name="NearbyImams"
+                    component={NearbyImamsScreen}
+                  />
+                  <Stack.Screen
+                    name="ImamDetail"
+                    component={ImamDetailScreen}
+                  />
+                  <Stack.Screen
+                    name="BookingConfirmation"
+                    component={BookingConfirmationScreen}
+                  />
+                  <Stack.Screen
+                    name="BookingStatus"
+                    component={BookingStatusScreen}
+                  />
+
+                  {/* 🔹 EXISTING AUTH / PROFILE SCREENS (kept, but not default) */}
                   <Stack.Screen name="StartScreen" component={StartScreen} />
                   <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                  <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-                  <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+                  <Stack.Screen
+                    name="RegisterScreen"
+                    component={RegisterScreen}
+                  />
+                  <Stack.Screen
+                    name="ResetPasswordScreen"
+                    component={ResetPasswordScreen}
+                  />
                   <Stack.Screen name="MainTabs" component={MainTabs} />
-                  <Stack.Screen 
-                    name="ProfileScreen" 
+                  <Stack.Screen
+                    name="ProfileScreen"
                     component={ProfileScreen}
-                    options={{
-                      headerShown: true,
-                      title: 'Profile',
-                    }}
+                    options={{ headerShown: true, title: "Profile" }}
                   />
                 </Stack.Navigator>
               </NavigationContainer>
