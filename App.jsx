@@ -20,12 +20,13 @@ import {
   ProfileScreen,
 } from "./app/screens";
 
+import LoadingScreen from './app/screens/LoadingScreen';
+import { loadStoredAuth } from './app/services/auth';
+import OtpVerificationScreen from './app/screens/OtpVerificationScreen'; // ✅ import OTP screen
+
 const Stack = createStackNavigator();
 
 enableScreens();
-
-import LoadingScreen from './app/screens/LoadingScreen';
-import { loadStoredAuth } from './app/services/auth';
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -77,6 +78,11 @@ export default function App() {
                       title: 'Profile',
                     }}
                   />
+                   {/* ✅ Add OTP screen here */}
+                <Stack.Screen 
+                  name="OtpVerification" 
+                  component={OtpVerificationScreen} 
+                />
                 </Stack.Navigator>
               </NavigationContainer>
             </PaperProvider>
