@@ -25,12 +25,12 @@ import {
 } from "./app/screens";
 
 /* 🔹 IMAM BOOKING MODULE SCREENS */
-import ServiceSelectionScreen from "./app/screens/ServiceSelectionScreen";
-import ServiceRequestFormScreen from "./app/screens/ServiceRequestFormScreen";
-import NearbyImamsScreen from "./app/screens/NearbyImamsScreen";
-import ImamDetailScreen from "./app/screens/ImamDetailScreen";
-import BookingConfirmationScreen from "./app/screens/BookingConfirmationScreen";
-import BookingStatusScreen from "./app/screens/BookingStatusScreen";
+import ServiceSelectionScreen from "./app/screens/ImamBookingAndScheduling/ServiceSelectionScreen";
+import ServiceRequestFormScreen from "./app/screens/ImamBookingAndScheduling/ServiceRequestFormScreen";
+import NearbyImamsScreen from "./app/screens/ImamBookingAndScheduling/NearbyImamsScreen";
+import ImamDetailScreen from "./app/screens/ImamBookingAndScheduling/ImamDetailScreen";
+import BookingConfirmationScreen from "./app/screens/ImamBookingAndScheduling/BookingConfirmationScreen";
+import BookingStatusScreen from "./app/screens/ImamBookingAndScheduling/BookingStatusScreen";
 
 const Stack = createStackNavigator();
 enableScreens();
@@ -93,7 +93,7 @@ export default function App() {
                     component={BookingStatusScreen}
                   />
 
-                  {/* 🔹 EXISTING AUTH / PROFILE SCREENS (kept, but not default) */}
+                  {/* 🔹 AUTH / OTHER SCREENS */}
                   <Stack.Screen name="StartScreen" component={StartScreen} />
                   <Stack.Screen name="LoginScreen" component={LoginScreen} />
                   <Stack.Screen
@@ -119,3 +119,4 @@ export default function App() {
     </ReduxProvider>
   );
 }
+
