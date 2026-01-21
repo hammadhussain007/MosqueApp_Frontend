@@ -1,5 +1,5 @@
 // app/screens/ImamBookingAndScheduling/ServiceRequestFormScreen.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,19 +9,26 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { useSelector } from "react-redux";
 
 export default function ServiceRequestFormScreen({ navigation, route }) {
   const { serviceName } = route.params || {};
+  const user = useSelector((state) => state.user.profile);
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
-  const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [time, setTime] = useState(new Date());
-  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setFullName(user.name || "");
+      setPhone(user.phone || "");
+      setAddress(user.address || "");
+    }
+  }, [user]);
 
   const handleNext = () => {
     // Trim fields and validate
@@ -41,8 +48,8 @@ export default function ServiceRequestFormScreen({ navigation, route }) {
       phone: phone.trim(),
       address: address.trim(),
       notes: notes.trim(),
-      date: date.toDateString(),
-      time: time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      date: date.trim(),
+      time: time.trim(),
     });
   };
 
@@ -52,6 +59,11 @@ export default function ServiceRequestFormScreen({ navigation, route }) {
       <Text style={styles.subtitle}>
         Service: {serviceName || "Selected Service"}
       </Text>
+      {user && (
+        <Text style={styles.autofillNote}>
+          Fields autofilled from your profile. You can edit them.
+        </Text>
+      )}
 
       <TextInput
         style={styles.input}
@@ -75,45 +87,19 @@ export default function ServiceRequestFormScreen({ navigation, route }) {
         onChangeText={setAddress}
       />
 
-      <TouchableOpacity
+      <TextInput
         style={styles.input}
-        onPress={() => setShowDatePicker(true)}
-      >
-        <Text>{`Preferred Date: ${date.toDateString()}`}</Text>
-      </TouchableOpacity>
-      {showDatePicker && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          minimumDate={new Date()}
-          display="default"
-          onChange={(event, selectedDate) => {
-            setShowDatePicker(false);
-            if (selectedDate) setDate(selectedDate);
-          }}
-        />
-      )}
+        placeholder="Preferred Date (e.g., 2026-01-22)"
+        value={date}
+        onChangeText={setDate}
+      />
 
-      <TouchableOpacity
+      <TextInput
         style={styles.input}
-        onPress={() => setShowTimePicker(true)}
-      >
-        <Text>{`Preferred Time: ${time.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        })}`}</Text>
-      </TouchableOpacity>
-      {showTimePicker && (
-        <DateTimePicker
-          value={time}
-          mode="time"
-          display="default"
-          onChange={(event, selectedTime) => {
-            setShowTimePicker(false);
-            if (selectedTime) setTime(selectedTime);
-          }}
-        />
-      )}
+        placeholder="Preferred Time (e.g., 10:00 AM)"
+        value={time}
+        onChangeText={setTime}
+      />
 
       <TextInput
         style={[styles.input, styles.textArea]}
@@ -149,6 +135,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
     color: "#555",
+  },
+  autofillNote: {
+    fontSize: 14,
+    textAlign: "center",
+    marginBottom: 15,
+    color: "#007bff",
+    fontStyle: "italic",
   },
   input: {
     width: "100%",

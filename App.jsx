@@ -25,12 +25,12 @@ import {
 } from "./app/screens";
 
 /* 🔹 IMAM BOOKING MODULE SCREENS */
-import ServiceSelectionScreen from "./app/screens/ImamBookingAndScheduling/ServiceSelectionScreen";
-import ServiceRequestFormScreen from "./app/screens/ImamBookingAndScheduling/ServiceRequestFormScreen";
-import NearbyImamsScreen from "./app/screens/ImamBookingAndScheduling/NearbyImamsScreen";
-import ImamDetailScreen from "./app/screens/ImamBookingAndScheduling/ImamDetailScreen";
-import BookingConfirmationScreen from "./app/screens/ImamBookingAndScheduling/BookingConfirmationScreen";
-import BookingStatusScreen from "./app/screens/ImamBookingAndScheduling/BookingStatusScreen";
+import ServiceSelectionScreen from "./screens/ImanBookingAndScheduling/ServiceSelectionScreen";
+import ServiceRequestFormScreen from "./screens/ImanBookingAndScheduling/ServiceRequestFormScreen";
+import NearbyImamsScreen from "./screens/ImanBookingAndScheduling/NearbyImamsScreen";
+import ImamDetailScreen from "./screens/ImanBookingAndScheduling/ImamDetailScreen";
+import BookingConfirmationScreen from "./screens/ImanBookingAndScheduling/BookingConfirmationScreen";
+import BookingStatusScreen from "./screens/ImanBookingAndScheduling/BookingStatusScreen";
 
 const Stack = createStackNavigator();
 enableScreens();
