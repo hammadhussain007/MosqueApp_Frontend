@@ -15,10 +15,18 @@ import ReportsScreen from "./ReportsScreen";
 import ImamDashboard from "./ImamDashboard";
 import TopicDetailScreen from "./TopicDetailScreen";
 import KhutbahSearchScreen from "./KhutbahSearchScreen";
+// Booking screens
+import ServiceSelectionScreen from "../../screens/ImanBookingAndScheduling/ServiceSelectionScreen";
+import ServiceRequestFormScreen from "../../screens/ImanBookingAndScheduling/ServiceRequestFormScreen";
+import NearbyImamsScreen from "../../screens/ImanBookingAndScheduling/NearbyImamsScreen";
+import ImamDetailScreen from "../../screens/ImanBookingAndScheduling/ImamDetailScreen";
+import BookingConfirmationScreen from "../../screens/ImanBookingAndScheduling/BookingConfirmationScreen";
+import BookingStatusScreen from "../../screens/ImanBookingAndScheduling/BookingStatusScreen";
 
 const Tab = createBottomTabNavigator();
 const ForumStackNav = createStackNavigator();
 const ImamStackNav = createStackNavigator();
+const BookingStackNav = createStackNavigator();
 
 function ForumStack() {
   return (
@@ -85,6 +93,37 @@ function ImamStack() {
         }}
       />
     </ImamStackNav.Navigator>
+  );
+}
+
+function BookingStack() {
+  return (
+    <BookingStackNav.Navigator screenOptions={{ headerShown: false }}>
+      <BookingStackNav.Screen
+        name="ServiceSelection"
+        component={ServiceSelectionScreen}
+      />
+      <BookingStackNav.Screen
+        name="ServiceRequestForm"
+        component={ServiceRequestFormScreen}
+      />
+      <BookingStackNav.Screen
+        name="NearbyImams"
+        component={NearbyImamsScreen}
+      />
+      <BookingStackNav.Screen
+        name="ImamDetail"
+        component={ImamDetailScreen}
+      />
+      <BookingStackNav.Screen
+        name="BookingConfirmation"
+        component={BookingConfirmationScreen}
+      />
+      <BookingStackNav.Screen
+        name="BookingStatus"
+        component={BookingStatusScreen}
+      />
+    </BookingStackNav.Navigator>
   );
 }
 
@@ -158,6 +197,19 @@ export default function MainTabs() {
           ),
         }}
       />
+      {/* Booking tab visible to regular users (and imams) */}
+      {!isAdmin && (
+        <Tab.Screen
+          name="BookingTab"
+          component={BookingStack}
+          options={{
+            tabBarLabel: "Booking",
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="calendar-clock" size={size} color={color} />
+            ),
+          }}
+        />
+      )}
       {isAdmin && (
         <Tab.Screen
           name="ReportsTab"
