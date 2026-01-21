@@ -19,6 +19,7 @@ import {
   MainTabs,
   ProfileScreen,
 } from "./app/screens";
+//test
 
 import LoadingScreen from './app/screens/LoadingScreen';
 import { loadStoredAuth } from './app/services/auth';
